@@ -1,9 +1,11 @@
 package poo.fatec;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
-public class Site {
+public class Site implements Serializable{
 	String name;
 	String address;
 	int id;
@@ -15,11 +17,15 @@ public class Site {
 		this.id = id;
 	}
 	
-	public void listCustomers() {
+	public void listCustomersAlphabetically() {
+		Collections.sort(customers);
 		for (Customer customer: customers) {
-			System.out.println(customer);
+			if (customer.isDeleted == false) {
+				System.out.println(customer);
+			}
 		}
 	}
+	
 	
 	public void addCustomer(Customer createdCustomer) {
 		customers.add(createdCustomer);

@@ -1,21 +1,40 @@
 package poo.fatec;
+import java.util.*;
+import java.io.Serializable;
+import java.util.Date;
+import java.text.*;
 
-public class Customer {
+public class Customer implements Comparable<Customer>, Serializable{
 	
 	public String name;
 	public String phone;
 	public String gender;
+	public Date birthDate;
 	private int id;
+	public List<Product> produtos; 
+	public boolean isDeleted;
 	
-	public Customer(String name, String phone, String gender, int id) {
+	public Customer(String name, String phone, String gender, String birthDate, int id) throws ParseException {
 		this.name = name;
 		this.phone = phone; 
 		this.gender = gender;
+		SimpleDateFormat textDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		this.birthDate = textDateFormat.parse(birthDate);
 		this.id = id;
+		this.isDeleted = false;
 	}
 	
 	public int getId() {
 		return id;
+	}
+	
+	public long getAge() {
+		long birth = birthDate.getTime() / 1000;
+		Date today = new Date();
+		long now = today.getTime() / 1000;
+		return (now - birth ) / 31536000;
+		
+		
 	}
 	
 	private boolean isThisGenderValid(Customer customer) {
@@ -34,9 +53,23 @@ public class Customer {
 		return false;
 	}
 	
-	@Override
-	public String toString() {
-		return "Cliente ID: " + id + "\nNome: " + name + "\nTelefone: " + phone + "\n";
+	public void deleteCustomer() {
+		this.isDeleted = true;
 	}
 	
+	public void recoverCustomer() {
+		this.isDeleted = false;
+	}
+	
+	@Override
+	public String toString() {
+		return "\n-----------------------"
+				+ "Cliente ID: " + id + "\nNome: " + name + "\nTelefone: " + phone + "\nIdade: " + getAge()
+				+"\n-----------------------";
+	}
+
+	@Override
+	public int compareTo(Customer other) {
+		return this.name.compareToIgnoreCase(other.name);
+	}
 }

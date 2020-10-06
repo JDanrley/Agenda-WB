@@ -1,20 +1,28 @@
 package poo.fatec;
 
-public class Main {
-	public static void main(String[] args) {	
+import java.io.*;
+
+public class Main implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public static void main(String[] args) throws Exception {
+		
 		System.out.println("-------------------------------------------");
 		System.out.println("Seja bem vindo(a) à agenda de clientes WB.");
 		System.out.println("-------------------------------------------");
 		
-		View.pause();
-		if (Company.thereAreSitesRegistered()) {
-			System.out.println("Escolha o seu site, por ID, conforme lista abaixo: ");
-			Service.createSite();
+		
+		try {
+			Service.updateState();
+			
 		}
-		else {
-			System.out.println("Nenhuma loja foi cadastrada ainda, registre uma unidade da empresa:");
+		catch (Exception error) {
+			System.out.println("Nenhum valor anterior foi encontrado. Um cadastro de unidades será necessário");
 			Service.createSite();
-		}
+		}	
 		
 	}
 

@@ -1,103 +1,108 @@
 package poo.fatec;
+import java.io.*;
 
-public class Service {
+public class Service implements Serializable{
 		
-	public static void createSite() {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	public static void updateState() throws Exception {
+		Company.readState();
+		selectSite();
+	}
+	public static void createSite() throws Exception {
 		Site registeredSite = View.registerSites();
 		Company.createSite(registeredSite);
+		Company.saveState();
 		System.out.println("Site registrado com sucesso");
 		View.pause();
 		optionsManager(registeredSite);
 	}
 	
-	
-	public static void optionsManager(Site selectedSite) {
-		int option = View.siteOptions();
-		switch (option) {
-		  case 1:
-			  createCustomer(selectedSite);
-			  break;
-		  case 2:
-			  editCustomer(selectedSite);
-			  break;
-		  case 3:
-			  deleteCustomer(selectedSite);
-			  break;
-		  case 4:
-			  System.out.println("Listagem de clientes do site " + selectedSite.name);
-			  selectedSite.listCustomers();
-			  View.pause();
-			  optionsManager(selectedSite);
-			  break;
-		}
-	
+	public static void selectSite() throws Exception{
+		Site selectedSite = View.siteSelection();
+		optionsManager(selectedSite);
 	}
 	
 	
-	public static void createCustomer(Site selectedSite) {
+	public static void optionsManager(Site selectedSite) throws Exception {
+		String option = View.siteOptions();
+		switch (option) {
+		  case "1":
+			  createCustomer(selectedSite);
+			  break;
+		  case "2":
+			  editCustomer(selectedSite);
+			  break;
+		  case "3":
+			  deleteCustomer(selectedSite);
+			  break;
+		  case "4":
+			  listCustomersAlphabetically(selectedSite);
+			  break;
+		  case "5":
+			  listCustomerByGender(selectedSite);
+		  default:
+			  System.out.println("Valor inválido. Você será redirecionado ao menu novamente.");
+			  View.pause();
+			  optionsManager(selectedSite);
+		}
+		
+	}
+	
+	public static void createCustomer(Site selectedSite) throws Exception {
 		selectedSite.customers.add(View.inputCustomer(selectedSite));
+		Company.saveState();
 		System.out.println("Cliente criado com sucesso;");
 		View.pause();
 		optionsManager(selectedSite);
 	}
 	
 	
-	public static void editCustomer(Site selectedSite) {
+	public static void editCustomer(Site selectedSite) throws Exception {
 		int option = View.editedCustomerMenu(selectedSite);
 		selectedSite.customers.remove(option);
 		selectedSite.customers.add(option, View.inputCustomer(selectedSite));
+		Company.saveState();
 		System.out.println("Cliente editado com sucesso");
+		View.pause();
 		optionsManager(selectedSite);
 	}
 	
 	
-	public static void deleteCustomer(Site selectedSite) {
+	public static void deleteCustomer(Site selectedSite) throws Exception {
 		int option = View.deleteCustomerMenu(selectedSite);
-		selectedSite.customers.remove(option);
+		selectedSite.customers.get(option).deleteCustomer();
+		Company.saveState();
 		System.out.println("Cliente removido com sucesso");
+		View.pause();
+		optionsManager(selectedSite);
 	}
 	
+	public static void listCustomersAlphabetically(Site selectedSite) throws Exception {
+		  System.out.println("Listagem de clientes do site " + selectedSite.name + " em ordem alfabética");
+		  selectedSite.listCustomersAlphabetically();
+		  View.input();
+		  View.pause();
+		  optionsManager(selectedSite);
+	}
 	
-	
-	
-	
-	
-	
-	
-	/* 
-	public static void createCustomer2(Site selectedSite) {
-		
-		if(customer.name.length() == 0) {
-			if(customer.phone.length() == 0) {
-				System.out.println("Preencha o nome e o endereço.");
-				View.inputCustomer(selectedSite);
+	public static void listCustomerByGender(Site selectedSite) {
+		View.input();
+		String selectedGender = View.listCustomerByGender(selectedSite);
+		System.out.println("Listagem dos clientes do sexo " + selectedGender + "\n");
+		for (Customer customer: selectedSite.customers) {
+			if (customer.gender.toUpperCase().equals(selectedGender.toUpperCase())) {
+				System.out.println(customer);
 			}
 		}
-		else if (customer.gender.toUpperCase() != "M" && customer.gender.toUpperCase() != "F") {
-			System.out.println("Insira valores válidos para o gênero (M/F)");
-			View.inputCustomer(selectedSite);
-		}
-		else {
-			selectedSite.addCustomer(customer);
-			System.out.println("Cliente cadastrado com sucesso na loja" + selectedSite);
-			
-		}
+		View.pause();
 	}
-	
-	
-	public static void createCustomer(Customer customer, Site site) {
-		if (customer.isValid()) {
-			site.customers.add(customer);
-			System.out.println("Cliente cadastrado com sucesso.");
-		}
-		else {
-			System.out.println("Os dados preenchidos não são válidos, preencha novamente");
-			View.inputCustomer(site);
-		}
 		
 		
-	}
-	*/
-	
-
+		
 }
+
+
