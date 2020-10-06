@@ -26,14 +26,25 @@ public class Site implements Serializable{
 		}
 	}
 	
-	
 	public void addCustomer(Customer createdCustomer) {
 		customers.add(createdCustomer);
+	}
+	
+	public void deleteCustomer(int index) {
+		this.customers.get(index).isDeleted = true;
+	}
+	
+	public int avarageAge() {
+		int totalAge = 0;
+		for (Customer customer: customers) {
+			totalAge += customer.getAge();
+		}
+		return totalAge / customers.size();
 	}
 
 	@Override
 	public String toString() {
-		return "Site: " + name + "\nEndereço" + address + "\nID: " + id + "\n";
+		return "Site: " + name + "\nID: " + id + "\n";
 	}
 	
 	public boolean equals(Site other) {

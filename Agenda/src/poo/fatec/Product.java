@@ -11,4 +11,9 @@ public class Product implements Serializable {
 		this.gender = gender;
 	}
 	
+	@Override
+	public String toString() {
+		return name + " - Sexo: " + gender + " ID: ";
+	}
+	
 }

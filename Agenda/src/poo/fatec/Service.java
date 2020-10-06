@@ -44,6 +44,8 @@ public class Service implements Serializable{
 			  break;
 		  case "5":
 			  listCustomerByGender(selectedSite);
+		  case "6":
+			  inputProductToCustomer(selectedSite);
 		  default:
 			  System.out.println("Valor inválido. Você será redirecionado ao menu novamente.");
 			  View.pause();
@@ -74,7 +76,7 @@ public class Service implements Serializable{
 	
 	public static void deleteCustomer(Site selectedSite) throws Exception {
 		int option = View.deleteCustomerMenu(selectedSite);
-		selectedSite.customers.get(option).deleteCustomer();
+		selectedSite.deleteCustomer(option);
 		Company.saveState();
 		System.out.println("Cliente removido com sucesso");
 		View.pause();
@@ -84,25 +86,30 @@ public class Service implements Serializable{
 	public static void listCustomersAlphabetically(Site selectedSite) throws Exception {
 		  System.out.println("Listagem de clientes do site " + selectedSite.name + " em ordem alfabética");
 		  selectedSite.listCustomersAlphabetically();
-		  View.input();
 		  View.pause();
 		  optionsManager(selectedSite);
 	}
 	
-	public static void listCustomerByGender(Site selectedSite) {
-		View.input();
+	public static void listCustomerByGender(Site selectedSite) throws Exception {
 		String selectedGender = View.listCustomerByGender(selectedSite);
 		System.out.println("Listagem dos clientes do sexo " + selectedGender + "\n");
 		for (Customer customer: selectedSite.customers) {
-			if (customer.gender.toUpperCase().equals(selectedGender.toUpperCase())) {
+			if (customer.gender.toUpperCase().equals(selectedGender.toUpperCase()) && customer.isDeleted == false) {
 				System.out.println(customer);
 			}
 		}
 		View.pause();
+		optionsManager(selectedSite);
+	}
+	
+	public static void inputProductToCustomer(Site selectedSite) throws Exception{
+		int customerIndex = View.selectCustomer(selectedSite);
+		int inputProduct = View.selectProduct(selectedSite);
+		selectedSite.customers.get(customerIndex).addProduct(inputProduct);
+		System.out.println("Produto/Serviço cadastrado com sucesso");
+		View.pause();
+		optionsManager(selectedSite);
 	}
 		
-		
-		
 }
-
 

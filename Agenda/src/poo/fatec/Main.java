@@ -13,17 +13,16 @@ public class Main implements Serializable {
 		System.out.println("-------------------------------------------");
 		System.out.println("Seja bem vindo(a) à agenda de clientes WB.");
 		System.out.println("-------------------------------------------");
-		
-		
-		try {
+		Service.updateState();
+		/*try {
 			Service.updateState();
-			
 		}
-		catch (Exception error) {
+		catch (Exception IOException) {
 			System.out.println("Nenhum valor anterior foi encontrado. Um cadastro de unidades será necessário");
 			Service.createSite();
 		}	
-		
+	*/	
 	}
+	
 
 }

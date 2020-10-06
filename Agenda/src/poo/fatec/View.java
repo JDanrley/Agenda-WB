@@ -10,7 +10,7 @@ public class View {
 	public static Site registerSites()  {
 		System.out.print("Digite o nome da unidade: ");
 		String siteName = input();
-		return new Site(siteName, Company.sites.size() + 1);
+		return new Site(siteName, Company.sites.size());
 	}
 	
 	
@@ -18,7 +18,7 @@ public class View {
 		Company.sites.forEach(site -> System.out.println(site));
 		System.out.print("Selecione o site pelo ID: ");
 		int option = reader.nextInt();
-		return Company.sites.get(option - 1);
+		return Company.sites.get(option);
 	}
 
 	
@@ -30,8 +30,9 @@ public class View {
 		System.out.println("3. Excluir cliente");
 		System.out.println("4. Listar clientes em ordem alfabética");
 		System.out.println("5. Listar clientes em ordem alfabética, de apenas um gênero");
-		System.out.println("6. Relatórios (outras listagens)");
-		System.out.println("7. Sair da agenda");
+		System.out.println("6. Cadastrar serviço para cliente");
+		System.out.println("7. Relatórios (outras listagens)");
+		System.out.println("8. Sair da agenda");
 		System.out.println("*********************\n");
 		System.out.print("Selecione a sua opção: ");
 		
@@ -51,7 +52,6 @@ public class View {
 	
 
 	public static Customer inputCustomer(Site selectedSite) throws Exception {
-		input();
 		System.out.print("Insira o nome do cliente: ");
 		String nome = input();
 		System.out.print("Insira o telefone do cliente: ");
@@ -93,12 +93,20 @@ public class View {
 		return genero;
 	}
 	
-	public static void inputServiceToCustomer(Site selectedSite) {
+	public static int selectCustomer(Site selectedSite) {
 		System.out.println("Selecione o cliente que deseja inserir o serviço ou produto, por ID");
 		selectedSite.listCustomersAlphabetically();
-		System.out.print("Digite o ID do cliente: ");
-		
-		
+		System.out.print("Digite o ID do cliente: ");	
+		int option = inputInt();
+		return option;
+	}
+	
+	public static int selectProduct(Site selectedSite) {
+		System.out.println("Escolha o produto, de acordo com o ID");
+		Company.listProducts();
+		System.out.print("Digite o ID do produto a ser adicionado ao cliente: ");
+		int option = inputInt();
+		return option;
 	}
 	
 	
@@ -113,8 +121,9 @@ public class View {
 		int option = reader.nextInt();
 		return option;
 	}
-	
+		
 	public static void pause() {
+		reader.reset();
 		System.out.println("Tecle ENTER para continuar...");
 		reader.nextLine();
 	}
