@@ -9,8 +9,8 @@ public class Service implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	public static void updateState() throws Exception {
-		Company.readState();
-		selectSite();
+		createSite();
+		Company.saveState();
 	}
 	public static void createSite() throws Exception {
 		Site registeredSite = View.registerSites();
@@ -28,24 +28,27 @@ public class Service implements Serializable{
 	
 	
 	public static void optionsManager(Site selectedSite) throws Exception {
+		View.input();
 		String option = View.siteOptions();
 		switch (option) {
 		  case "1":
 			  createCustomer(selectedSite);
-			  break;
 		  case "2":
 			  editCustomer(selectedSite);
-			  break;
 		  case "3":
 			  deleteCustomer(selectedSite);
-			  break;
 		  case "4":
 			  listCustomersAlphabetically(selectedSite);
-			  break;
 		  case "5":
 			  listCustomerByGender(selectedSite);
 		  case "6":
 			  inputProductToCustomer(selectedSite);
+		  case "7":
+			  manageReport(selectedSite);
+		  case "8":
+			  createSite();
+		  case "9":
+			  endProgram();
 		  default:
 			  System.out.println("Valor inválido. Você será redirecionado ao menu novamente.");
 			  View.pause();
@@ -65,10 +68,14 @@ public class Service implements Serializable{
 	
 	public static void editCustomer(Site selectedSite) throws Exception {
 		int option = View.editedCustomerMenu(selectedSite);
-		selectedSite.customers.remove(option);
-		selectedSite.customers.add(option, View.inputCustomer(selectedSite));
-		Company.saveState();
-		System.out.println("Cliente editado com sucesso");
+		System.out.print("Digite o novo nome: ");
+		View.input();
+		String newName = View.input();
+		System.out.print("Digite o novo telefone: ");
+		String newPhone = View.input();
+		System.out.print("Digite a nova data de nascimento (dd/MM/yyy): ");
+		String newBirthDate = View.input();
+		selectedSite.customers.get(option).update(newName, newPhone, newBirthDate);
 		View.pause();
 		optionsManager(selectedSite);
 	}
@@ -110,6 +117,49 @@ public class Service implements Serializable{
 		View.pause();
 		optionsManager(selectedSite);
 	}
-		
+	
+	public static void manageReport(Site selectedSite) throws Exception {
+		String option = View.selectReport(selectedSite);
+		switch(option) {
+			case "1":
+				reportAvarageAge(selectedSite);
+			case "2":
+				reportAvareAgeByGender(selectedSite);
+			case "3":
+				break;
+			case "4":
+				break;
+			case "5":
+				optionsManager(selectedSite);
+			default:
+				System.out.println("Valor inválido. Digite novamente");
+				View.pause();
+				manageReport(selectedSite);
+		}
+	}
+	
+	public static void reportAvarageAge(Site selectedSite) throws Exception {
+		System.out.print("A idade média do publico no site selecionado é ");
+		System.out.println(selectedSite.avarageAge());
+		System.out.println("--------------------------");
+		View.pause();
+		manageReport(selectedSite);
+	}
+	
+	public static void reportAvareAgeByGender(Site selectedSite) throws Exception {
+		System.out.print("Digite o gênero que deseja extrair a idade média: ");
+		String gender = View.input();
+		int avarageAge = Company.avarageAgeByGender(gender);
+		System.out.print("O valor médio de idade é ");
+		System.out.println(avarageAge);
+		View.pause();
+		manageReport(selectedSite);
+	}
+	
+	public static void endProgram() throws Exception {
+		Company.saveState();
+		System.out.println("Obrigado por utilizar a agenda.");
+		System.exit(0);
+	}
 }
 

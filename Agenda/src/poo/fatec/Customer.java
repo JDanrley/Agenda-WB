@@ -14,6 +14,7 @@ public class Customer implements Comparable<Customer>, Serializable{
 	public List<Product> products = new ArrayList<>(); 
 	public boolean isDeleted;
 	
+	
 	public Customer(String name, String phone, String gender, String birthDate, int id) throws ParseException {
 		this.name = name;
 		this.phone = phone; 
@@ -26,6 +27,14 @@ public class Customer implements Comparable<Customer>, Serializable{
 	
 	public int getId() {
 		return id;
+	}
+	
+	public void update(String name, String phone, String birthDate) throws ParseException {
+		this.name = name;
+		this.phone = phone; 
+		SimpleDateFormat textDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		this.birthDate = textDateFormat.parse(birthDate);
+		System.out.println("Dados atualizados com sucesso");
 	}
 	
 	public long getAge() {
@@ -65,9 +74,9 @@ public class Customer implements Comparable<Customer>, Serializable{
 	
 	@Override
 	public String toString() {
-		return "\n-----------------------\n"
+		return "-----------------------\n"
 				+ "Cliente ID: " + id + "\nNome: " + name + "\nTelefone: " + phone + "\nIdade: " + getAge()
-				+"\n-----------------------\n";
+				+"\n-----------------------";
 	}
 
 	@Override

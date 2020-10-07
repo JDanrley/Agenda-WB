@@ -32,7 +32,8 @@ public class View {
 		System.out.println("5. Listar clientes em ordem alfabética, de apenas um gênero");
 		System.out.println("6. Cadastrar serviço para cliente");
 		System.out.println("7. Relatórios (outras listagens)");
-		System.out.println("8. Sair da agenda");
+		System.out.println("8. Criar um novo site/loja");
+		System.out.println("9. Sair da agenda");
 		System.out.println("*********************\n");
 		System.out.print("Selecione a sua opção: ");
 		
@@ -78,7 +79,6 @@ public class View {
 		return option;
 	}
 	
-	
 	public static int deleteCustomerMenu(Site selectedSite) {
 		System.out.println("Selecione o cliente que deseja remover, de acordo com o ID");
 		selectedSite.listCustomersAlphabetically();
@@ -109,20 +109,20 @@ public class View {
 		return option;
 	}
 	
-	
-	public static int selectReport(Site selectedSite){
+	public static String selectReport(Site selectedSite){
 		System.out.println("\n*********************");
 		System.out.println("Selecione qual relatório você deseja extrair");
-		System.out.println("1. Idade média do público por idade.");
-		System.out.println("2. Idade média do público por gênero.");
+		System.out.println("1. Idade média do público por site.");
+		System.out.println("2. Idade média do público geral.");
 		System.out.println("3. Serviço mais procurado.");
 		System.out.println("4. Serviço mais procurado por gênero.");
+		System.out.println("5. Voltar para o menu principal.");
 		System.out.println("*********************\n");
-		int option = reader.nextInt();
+		String option = input();
 		return option;
 	}
 		
-	public static void pause() {
+	public synchronized static void pause() {
 		reader.reset();
 		System.out.println("Tecle ENTER para continuar...");
 		reader.nextLine();

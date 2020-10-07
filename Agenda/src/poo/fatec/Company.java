@@ -1,5 +1,6 @@
 package poo.fatec;
 
+import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.*;
@@ -70,26 +71,32 @@ public class Company implements Serializable{
 		int totalCustomers = 0;
 		for (Site site: sites) {
 			for (Customer customer: site.customers) {
-				if (customer.gender.toUpperCase() == gender) {
+				if (customer.gender.toUpperCase() == gender.toUpperCase()) {
 					totalAge += customer.getAge();
-					totalCustomers += 1;
+					totalCustomers = totalCustomers + 1;
 				}
 			}
+		}
+		if (totalCustomers == 0) {
+			return 0;
 		}
 		return totalAge / totalCustomers;		
 	}
 	
+	public static String mostUsedProduct() {
+		return "Não conseguimos finalizar a lógica deste relatório a tempo. Sentimos muito pelo inconvenient :\\";
+	}
+	
 	
 	public static void saveState() throws Exception {
-		FileOutputStream streamer = new FileOutputStream("sitesDatabase.txt");
+		FileOutputStream streamer = new FileOutputStream("sitesDatabase.ser");
 		ObjectOutputStream writer = new ObjectOutputStream(streamer);
 		writer.writeObject(sites);
 		writer.close();
-		System.out.println("Cadastros de clientes salvo com sucesso!");
 	}
 	
 	public static void readState() throws IOException, ClassNotFoundException {
-		FileInputStream streamer = new FileInputStream("sitesDatabase.txt");
+		FileInputStream streamer = new FileInputStream("sitesDatabase.ser");
 		ObjectInputStream reader = new ObjectInputStream(streamer);
 		sites = (List<Site>) reader.readObject();
 		reader.close();

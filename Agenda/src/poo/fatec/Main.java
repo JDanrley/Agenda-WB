@@ -13,15 +13,15 @@ public class Main implements Serializable {
 		System.out.println("-------------------------------------------");
 		System.out.println("Seja bem vindo(a) à agenda de clientes WB.");
 		System.out.println("-------------------------------------------");
-		Service.updateState();
-		/*try {
+		
+		File databaseFile = new File("sitesDatabase.ser");
+		if(databaseFile.exists()) { 
+		    Company.readState();
+		    Service.selectSite();
+		}
+		else {
 			Service.updateState();
 		}
-		catch (Exception IOException) {
-			System.out.println("Nenhum valor anterior foi encontrado. Um cadastro de unidades será necessário");
-			Service.createSite();
-		}	
-	*/	
 	}
 	
 

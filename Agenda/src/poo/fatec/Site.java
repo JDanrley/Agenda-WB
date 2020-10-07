@@ -11,6 +11,7 @@ public class Site implements Serializable{
 	int id;
 	
 	List<Customer> customers = new ArrayList<>();
+	List<Customer> customersBackup = new ArrayList<>();
 	
 	public Site(String name, int id) {
 		this.name = name;
@@ -18,8 +19,10 @@ public class Site implements Serializable{
 	}
 	
 	public void listCustomersAlphabetically() {
-		Collections.sort(customers);
-		for (Customer customer: customers) {
+		customersBackup.clear();
+		customersBackup.addAll(customers);
+		Collections.sort(customersBackup);
+		for (Customer customer: customersBackup) {
 			if (customer.isDeleted == false) {
 				System.out.println(customer);
 			}
@@ -40,6 +43,18 @@ public class Site implements Serializable{
 			totalAge += customer.getAge();
 		}
 		return totalAge / customers.size();
+	}
+	
+	public int howMuchThisProductIsUsed(String productName) {
+		int cont = 0;
+		for (Customer customer: customers) {
+			for (Product product: customer.products) {
+				if (product.name == productName) {
+					cont += 1;
+				}
+			}
+		}
+		return cont;
 	}
 
 	@Override

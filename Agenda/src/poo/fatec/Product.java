@@ -11,6 +11,14 @@ public class Product implements Serializable {
 		this.gender = gender;
 	}
 	
+	public int timesUsed() {
+		int cont = 0;
+		for (Site site: Company.sites) {
+			cont += site.howMuchThisProductIsUsed(this.name);
+		}
+		return cont;
+	}
+	
 	@Override
 	public String toString() {
 		return name + " - Sexo: " + gender + " ID: ";
